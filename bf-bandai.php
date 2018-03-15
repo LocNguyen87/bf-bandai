@@ -12,8 +12,7 @@ Text Domain:  bfbandai
 Domain Path:  /languages
 */
 
-define( 'BFBANDAI_URL', plugins_url( '', __FILE__ ) );
-define( 'BFBANDAI_DIR', plugin_dir_path( __FILE__ ) );
+require_once("define.php");
 
 register_activation_hook( __FILE__, 'bfbandai_on_activation' );
 register_deactivation_hook( __FILE__, 'bfbandai_on_deactivation' );

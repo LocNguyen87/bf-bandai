@@ -1,5 +1,7 @@
 jQuery(document).ready(function($) {
   $('#searchJanBtn').on('click', function() {
+    var loadingIcon = $('#loadingIcon');
+    var searchButton = $('#searchJanBtn');
     var janCode = $('#janCodeTxt').val();
     $.ajax({
       type: "POST",
@@ -9,7 +11,9 @@ jQuery(document).ready(function($) {
         jan_cd: janCode
       },
       beforeSend: function() {
-        $('#searchJanBtn').html('Searching...');
+        searchButton.attr('disabled', true);
+        searchButton.text('Searching...');
+        loadingIcon.show();
       },
       cache: false,
       success: function(data){
@@ -17,6 +21,11 @@ jQuery(document).ready(function($) {
       },
       error: function() {
 
+      },
+      complete: function() {
+        searchButton.attr('disabled', false);
+        searchButton.text('Done !');
+        loadingIcon.hide();
       }
     });
 

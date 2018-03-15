@@ -9,7 +9,10 @@
                 <input class="uk-input" id="janCodeTxt">
             </div>
             <div class="uk-margin">
-              <button class="uk-button uk-button-primary" id="searchJanBtn">Search</button>
+              <button class="uk-button uk-button-primary" id="searchJanBtn">Search</button><img id="loadingIcon" src="<?php echo BFBANDAI_URL.'/images/loading.svg'; ?>" />
+            </div>
+            <div class="uk-margin">
+
             </div>
         </div>
       </div>
