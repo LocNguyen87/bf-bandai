@@ -17,7 +17,9 @@ jQuery(document).ready(function($) {
       },
       cache: false,
       success: function(data){
-         console.log(data);
+        var x2jObj = null;
+        x2jObj = X2J.parseXml(data);
+        console.log(x2jObj[0].result_data[0]);
       },
       error: function() {
 
@@ -28,6 +30,5 @@ jQuery(document).ready(function($) {
         loadingIcon.hide();
       }
     });
-
-  })
+  });
 })

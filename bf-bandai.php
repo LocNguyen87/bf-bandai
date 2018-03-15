@@ -87,6 +87,7 @@ class BF_Bandai {
 
       wp_enqueue_script( 'uikit', BFBANDAI_URL.'/js/uikit.min.js', array( 'jquery' ), null, true );
       wp_enqueue_script( 'uikit-icon', BFBANDAI_URL.'/js/uikit-icons.min.js', array( 'jquery' ), null, true );
+      wp_enqueue_script( 'xml2json', BFBANDAI_URL.'/js/xml2json.js', null, true );
 			wp_enqueue_script( 'bfjs', BFBANDAI_URL.'/js/bf.js', array( 'jquery' ), null, true );
 
       wp_enqueue_style( 'uikit', BFBANDAI_URL.'/css/uikit.min.css', array(), null );
