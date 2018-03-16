@@ -18,6 +18,7 @@ jQuery(document).ready(function($) {
       cache: false,
       success: function(data){
         console.log(processSingleXML(data));
+        console.log('test');
       },
       error: function() {
 
