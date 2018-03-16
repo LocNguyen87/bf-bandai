@@ -14,22 +14,22 @@ Domain Path:  /languages
 
 require_once("define.php");
 
-register_activation_hook( __FILE__, 'bfbandai_on_activation' );
-register_deactivation_hook( __FILE__, 'bfbandai_on_deactivation' );
+// register_activation_hook( __FILE__, 'bfbandai_on_activation' );
+// register_deactivation_hook( __FILE__, 'bfbandai_on_deactivation' );
 
-// Function to call when activating plugin
-function bfbandai_on_activation() {
-    bfbandai_setup_post_type();
-    bfbandai_setup_taxonomies();
-    flush_rewrite_rules();
-}
+// // Function to call when activating plugin
+// function bfbandai_on_activation() {
+//     bfbandai_setup_post_type();
+//     bfbandai_setup_taxonomies();
+//     flush_rewrite_rules();
+// }
 
-// Function to call when deactivating plugin
-function bfbandai_on_deactivation() {
-    unregister_post_type('product');
-    unregister_taxonomy('product-category');
-    flush_rewrite_rules();
-}
+// // Function to call when deactivating plugin
+// function bfbandai_on_deactivation() {
+//     unregister_post_type('product');
+//     unregister_taxonomy('product-category');
+//     flush_rewrite_rules();
+// }
 
 
 $bfbandai = new BF_Bandai();
@@ -69,7 +69,17 @@ class BF_Bandai {
         'add-jan-code',
         array( $this, 'include_jan_code_page')
     );
+
+    add_submenu_page(
+        'bf-bandai-settings',
+        'Add new JAN code',
+        'Add new JAN code',
+        'manage_options',
+        'list-jan-code',
+        array( $this, 'include_store_jan_code')
+    );
 	}
+
 
 	function include_main_page()
 	{
@@ -78,6 +88,10 @@ class BF_Bandai {
 
   function include_jan_code_page() {
     require BFBANDAI_DIR.'admin/jan-code.php';
+  }
+
+  function include_store_jan_code() {
+    require BFBANDAI_DIR.'admin/store-jan.php';
   }
 
   function load_script_css()
