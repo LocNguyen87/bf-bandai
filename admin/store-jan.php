@@ -13,15 +13,11 @@
 						<input type="submit" name="submit" id="submit" class="uk-button uk-button-secondary" value="Save Changes">
 	               	</div>
 	               	<?php
-	               		$test = get_option('data_jancode');
-	               		// var_dump($test);
-	               		// echo $test[0];
-	               		foreach($test as $t){
-	               			echo $t;
-	               		}
+	               		$current_option = get_option('data_jancode');
 	               		if(isset($_POST['submit'])){
-	               			$jan_code = $_POST['data_jancode'];
-	               			update_option( 'data_jancode', [$jan_code]);
+	               			$new_jan_code = $_POST['data_jancode'];
+                      array_push($new_jan_code, $current_option);
+	               			update_option( 'data_jancode', $new_jan_code);
 	               		}
 	               	?>
                </form>

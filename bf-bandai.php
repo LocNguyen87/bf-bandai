@@ -14,24 +14,6 @@ Domain Path:  /languages
 
 require_once("define.php");
 
-// register_activation_hook( __FILE__, 'bfbandai_on_activation' );
-// register_deactivation_hook( __FILE__, 'bfbandai_on_deactivation' );
-
-// // Function to call when activating plugin
-// function bfbandai_on_activation() {
-//     bfbandai_setup_post_type();
-//     bfbandai_setup_taxonomies();
-//     flush_rewrite_rules();
-// }
-
-// // Function to call when deactivating plugin
-// function bfbandai_on_deactivation() {
-//     unregister_post_type('product');
-//     unregister_taxonomy('product-category');
-//     flush_rewrite_rules();
-// }
-
-
 $bfbandai = new BF_Bandai();
 
 class BF_Bandai {
@@ -47,6 +29,12 @@ class BF_Bandai {
 
     // load script and add_css
     add_action( 'admin_init', array( $this, 'load_script_css' ) );
+
+    // create a blank option
+    add_option('_jan_code_data', array());
+
+    // ajax functions
+    add_action( 'wp_ajax_add_new_jan_cd', array( $this, 'add_new_jan_cd' ));
   }
 
   function admin_menu()
@@ -68,6 +56,15 @@ class BF_Bandai {
         'manage_options',
         'add-jan-code',
         array( $this, 'include_jan_code_page')
+    );
+
+    add_submenu_page(
+        'bf-bandai-settings',
+        'Get products manually',
+        'Get products manually',
+        'manage_options',
+        'manually-get-product',
+        array( $this, 'include_manually_get_page')
     );
 
     add_submenu_page(
@@ -94,6 +91,10 @@ class BF_Bandai {
     require BFBANDAI_DIR.'admin/store-jan.php';
   }
 
+  function include_manually_get_page() {
+    require BFBANDAI_DIR.'admin/manually-get-product.php';
+  }
+
   function load_script_css()
 	{
 			wp_enqueue_script( 'jquery' );
@@ -103,6 +104,13 @@ class BF_Bandai {
       wp_enqueue_script( 'uikit-icon', BFBANDAI_URL.'/js/uikit-icons.min.js', array( 'jquery' ), null, true );
       wp_enqueue_script( 'xml2json', BFBANDAI_URL.'/js/xml2json.js', null, true );
 			wp_enqueue_script( 'bfjs', BFBANDAI_URL.'/js/bf.js', array( 'jquery' ), null, true );
+
+      $bfbandai_nonce = wp_create_nonce( 'bfbandai_nonce' );
+      wp_localize_script( 'bfjs', 'bf_ajax_obj', array(
+         'ajax_url'   => admin_url( 'admin-ajax.php' ),
+         'nonce'      => $bfbandai_nonce,
+         'jan_codes'  => wp_json_encode(get_option('_jan_code_data'))
+      ) );
 
       wp_enqueue_style( 'uikit', BFBANDAI_URL.'/css/uikit.min.css', array(), null );
 			wp_enqueue_style( 'bfcss', BFBANDAI_URL.'/css/bf.css', array(), null );
@@ -173,5 +181,21 @@ class BF_Bandai {
   	);
 
   	register_taxonomy( 'product-category', array( 'product' ), $args );
+  }
+
+  function add_new_jan_cd() {
+      // check_ajax_referer( 'bfbandai_nonce' );
+      $new_code = $_POST['jan_cd'];
+      $jan_codes = get_option('_jan_code_data');
+      if(!in_array($new_code, $jan_codes)) {
+        array_push($jan_codes, $new_code);
+        update_option('_jan_code_data', $jan_codes);
+        $number_of_code = count(get_option('_jan_code_data'));
+        echo $number_of_code;
+      }
+      else {
+        echo 'duplicated';
+      }
+      wp_die(); // All ajax handlers die when finished
   }
 }

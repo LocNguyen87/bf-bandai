@@ -1,6 +1,6 @@
 .medium-size-text{
 	font-size: 17px !important;
 }
-#loadingIcon {
+#loadingIcon, #statusText, #numberOfJanCode {
   display: none;
 }
